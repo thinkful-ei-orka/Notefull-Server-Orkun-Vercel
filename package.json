@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app",
-    "dev": "nodemon app"
+    "test": "mocha --require test/setup.js",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^7.1.0",
     "mocha": "^7.2.0",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
