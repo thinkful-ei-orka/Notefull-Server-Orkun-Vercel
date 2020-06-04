@@ -2,11 +2,12 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-const helmet = require('helmet')
+const helmet = require('helmet');
+const { NODE_ENV } = require('./config');
 
 const app = express();
 
-const morganOption = (process.env.NODE_ENV === 'production')
+const morganOption = (NODE_ENV === 'production')
     ? 'tiny'
     : 'common'
 
@@ -19,7 +20,7 @@ app.get('/', (req, res) => {
 });
 
 function errorHandler(error, req, res, next) {
-    if (process.env.NODE_ENV === 'production') {
+    if (NODE_ENV === 'production') {
         response = { message: 'Internal server error occured.' }
     } else {
         console.log(error);
