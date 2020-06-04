@@ -18,4 +18,17 @@ app.get('/', (req, res) => {
     res.json({ message: 'Hello, world!' })
 });
 
+function errorHandler(error, req, res, next) {
+    if (process.env.NODE_ENV === 'production') {
+        response = { message: 'Internal server error occured.' }
+    } else {
+        console.log(error);
+        response = { error, message: error.message }
+    }
+
+    res.status(500).json(response);
+}
+
+app.use(errorHandler);
+
 module.exports = app;
