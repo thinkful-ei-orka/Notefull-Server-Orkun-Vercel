@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
+const usersRouter = require('./users/users-router')
 
 const app = express();
 
@@ -29,6 +30,8 @@ function errorHandler(error, req, res, next) {
 
     res.status(500).json(response);
 }
+
+app.use(usersRouter);
 
 app.use(errorHandler);
 
