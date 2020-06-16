@@ -1,6 +1,7 @@
 const knex = require('knex')
 const app = require('../src/app')
 const supertest = require('supertest')
+const { expect } = require('chai')
 
 const testFolders = [
     {
@@ -9,7 +10,7 @@ const testFolders = [
     }
 ]
 
-describe('/folders', () => {
+describe('/folders endpoints', () => {
     let db;
 
     before('setup db', () => {
@@ -20,9 +21,79 @@ describe('/folders', () => {
           app.set('db', db)
     });
 
+
+    
     const cleanDb = () => db.raw(`TRUNCATE folders RESTART IDENTITY CASCADE;`);
     before('clean db', cleanDb);
     afterEach('clean db', cleanDb);
     after('end conn', () => db.destroy());
+
+    
+     describe('GET /folders/:folderid',()=>{
+         context('getting a specific folder',()=>{
+             beforeEach('insert folder',()=>{
+                 console.log(testFolders[0]);
+                 return db
+                    .into('folders')
+                    .insert(testFolders[0])
+             })
+             it('respond with a 200 and specified folder',()=>{
+                 const folderID = 1;
+                 const expectedFolder = testFolders[folderID -1];
+                 return supertest(app)
+                    .get(`/folders/${folderID}`)
+                    .expect(200,expectedFolder)
+                    
+             })
+         })
+     })
+
+     describe('GET /folders',()=>{
+        context('getting all folder',()=>{
+            beforeEach('insert folder',()=>{
+                console.log(testFolders[0]);
+                return db
+                   .into('folders')
+                   .insert(testFolders[0])
+            })
+            it('respond with a 200 and all folders',()=>{
+                return supertest(app)
+                   .get(`/folders`)
+                   .expect(200,testFolders)
+                   
+            })
+        })
+    })
+
+     describe('POST /folders',()=>{
+        context('Given the folders',()=>{
+            it('adds a folder to the database',()=>{
+
+                return supertest(app)
+                    .post('/folders')
+                    .send(testFolders[0])
+                    .expect(201)
+                    .expect(res=>{
+                        expect(res.body.title).to.eql(testFolders[0].title)
+                    })
+                    .then(postresponse=>
+                            supertest(app)
+                                .get(`/folders/${postresponse.body.id}`)
+                                .expect(postresponse.body)
+                        )
+            })
+            it(`response with 400`,()=>{
+                console.log(testFolders[0]);
+                delete testFolders[0].title;
+                return supertest(app)
+                    .post('/folders')
+                    .send(testFolders[0])
+                    .expect(400,{
+                        error:{message:`Missing 'title' in request body`}
+                        
+                    })
+            })
+        })
+     } )
 })
 
