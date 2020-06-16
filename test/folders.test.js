@@ -22,7 +22,7 @@ describe('/folders endpoints', () => {
     });
 
 
-    
+    //h
     const cleanDb = () => db.raw(`TRUNCATE folders RESTART IDENTITY CASCADE;`);
     before('clean db', cleanDb);
     afterEach('clean db', cleanDb);
