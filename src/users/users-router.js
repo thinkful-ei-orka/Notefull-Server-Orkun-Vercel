@@ -65,6 +65,15 @@ usersRouter
         .catch(next)
     })
 
+    // .get((req, res) => {
+    //     const { folderId } = req.params
+    //     NotesService.getNoteInFolders(
+    //         req.app.get('db'),
+    //         folderId
+    //     )
+    //     .then()
+    // })
+
 
     .get((req, res) => {
         res.json({
@@ -119,17 +128,17 @@ usersRouter
 
     })
     .post(jsonParser, (req, res, next) => {
-        const { title, folderId, content } = req.body
-        const newNote = { title, folderId, content }
+        const { title, folderid, content } = req.body
+        const newNote = { title, folderid, content }
         if (!title) {
             return res.status(400).json({
                 error: {message: `Missing 'title' in request body`}
             })
         }
         
-        if (!folderId) {
+        if (!folderid) {
           return res.status(400).json({
-              error: {message: `Missing 'folderID' in request body`}
+              error: {message: `Missing 'folderId' in request body`}
           })
       }
 
@@ -217,6 +226,14 @@ usersRouter
         .catch(next)
     })    
 
-
+    // usersRouter
+    // .route('/')
+    // .get((req, res, next)=>{
+    //     FoldersService.getAllFolders(req.app.get('db'))
+    //         .then(folders => {
+    //             res.json(folders);
+    //         })
+    //         .catch(next)
+    // })
 
 module.exports = usersRouter

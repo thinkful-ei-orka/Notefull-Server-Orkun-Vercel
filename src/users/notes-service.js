@@ -2,6 +2,14 @@ const NotesService = {
     getAllNotes(knex) {
       return knex.select('*').from('notes')
     },
+    
+  // getNoteInFolders(knex, folderId) {
+  //   return knex
+  //     .select('notes.id', 'notes.title', 'notes.modified', 'notes.content', 'notes.folderId')
+  //     .from('notes')
+  //     .join('notes.folderId, folder.id')
+  //     .where('folder.id', folderId)
+  // },
   
     insertNotes(knex, newNote) {
       return knex
