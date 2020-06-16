@@ -46,7 +46,7 @@ describe('/notes endpoints', () => {
     before('setup db', () => {
         db = knex({
             client: 'pg',
-            connection: process.env.TEST_DB_URL,
+            connection: process.env.TEST_DATABASE_URL,
           })
           app.set('db', db)
     });
@@ -62,13 +62,11 @@ describe('/notes endpoints', () => {
      describe('GET /notes/:noteid',()=>{
          context('getting a specific note',()=>{
             beforeEach('insert notes',()=>{
-                console.log(testFolders[0]);
                 return db
                    .into('folders')
                    .insert(testFolders[0])
             })
              beforeEach('insert notes',()=>{
-                 console.log(testnotes[0]);
                  return db
                     .into('notes')
                     .insert(testnotes[0])
@@ -101,7 +99,6 @@ describe('/notes endpoints', () => {
                 }
             ];
             beforeEach('insert notes',()=>{
-                console.log(testFolders[0]);
                 return db
                    .into('folders')
                    .insert(testFolders)
@@ -116,12 +113,9 @@ describe('/notes endpoints', () => {
                    .get(`/notes`)
                    .expect(200)
                    .expect(res=>{
-                       console.log(res.body);
 
                         const actual = new Intl.DateTimeFormat('en-US').format(new Date(res.body[0].modified));
                         const expected = new Intl.DateTimeFormat('en-US').format(new Date());
-                        console.log(actual);
-                        console.log(res.body[0].modified);
                         expect(res.body[0].title).to.eql(testNotes[0].title);
                         expect(res.body[0].content).to.eql(testNotes[0].content);
                         expect(res.body[0].id).to.eql(testNotes[0].id);
@@ -143,7 +137,6 @@ describe('/notes endpoints', () => {
             }
         ];
         beforeEach('insert notes',()=>{
-            console.log(testFolders[0]);
             return db
                .into('folders')
                .insert(testFolders)
@@ -187,7 +180,6 @@ describe('/notes endpoints', () => {
                         )
             })
             it(`response with 400`,()=>{
-                console.log(testnotes[0]);
                 delete testnotes[0].title;
                 return supertest(app)
                     .post('/folders')

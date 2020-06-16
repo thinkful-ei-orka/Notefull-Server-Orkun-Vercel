@@ -16,7 +16,7 @@ describe('/folders endpoints', () => {
     before('setup db', () => {
         db = knex({
             client: 'pg',
-            connection: process.env.TEST_DB_URL,
+            connection: process.env.TEST_DATABASE_URL,
           })
           app.set('db', db)
     });
@@ -32,7 +32,6 @@ describe('/folders endpoints', () => {
      describe('GET /folders/:folderid',()=>{
          context('getting a specific folder',()=>{
              beforeEach('insert folder',()=>{
-                 console.log(testFolders[0]);
                  return db
                     .into('folders')
                     .insert(testFolders[0])
@@ -51,7 +50,6 @@ describe('/folders endpoints', () => {
      describe('GET /folders',()=>{
         context('getting all folder',()=>{
             beforeEach('insert folder',()=>{
-                console.log(testFolders[0]);
                 return db
                    .into('folders')
                    .insert(testFolders[0])
@@ -83,7 +81,6 @@ describe('/folders endpoints', () => {
                         )
             })
             it(`response with 400`,()=>{
-                console.log(testFolders[0]);
                 delete testFolders[0].title;
                 return supertest(app)
                     .post('/folders')
