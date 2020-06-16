@@ -17,7 +17,7 @@ app.use(cors());
 app.use(helmet());
 
 app.get('/', (req, res) => {
-    res.json({ message: 'Hello, world!' })
+    res.json({message: 'Hello, world!'})
 });
 
 function errorHandler(error, req, res, next) {

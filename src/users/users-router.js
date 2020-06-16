@@ -7,6 +7,8 @@ const jsonParser = express.json()
 
 
 
+
+
 usersRouter
     .route('/folders')
     .get((req, res, next) => {
@@ -148,6 +150,7 @@ usersRouter
                     .status(201)
                     .location(`/notes/${note.id}`)
                     .json(note)
+                    .send(`${note} has been added`)
             })
             .catch(next)
 
